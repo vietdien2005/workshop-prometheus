@@ -1,0 +1,19 @@
+global:
+  evaluation_interval: 30s # default 1 minute
+  scrape_interval: 45s # default 1 minute
+
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - localhost:9093
+
+rule_files:
+  - rules/*.rule.yml
+
+scrape_configs:
+
+  - job_name: prometheus
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:9090']
