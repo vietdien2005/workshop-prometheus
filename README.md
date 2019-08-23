@@ -6,7 +6,6 @@
 - Grafana
 - Alertmanager
 - blackbox_exporter
-- Google Cadvisor
 - Slack
 
 ## Yêu cầu
@@ -27,7 +26,7 @@
 
 ![alertmanager](./images/alertmanager.png)
 
-- Truy cập Grafana [http://localhost:9115](http://localhost:9115) và login với `username/password: admin / tuoitre@123`
+- Truy cập Grafana [http://localhost:9115](http://localhost:9115) và login với `username/password: admin / admin`
 
 ![grafana](./images/grafana.png)
 

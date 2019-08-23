@@ -1,0 +1,11 @@
+groups:
+- name: tcp.rules
+  rules:
+  - alert: TcpTimeWait
+    expr: node_sockstat_TCP_tw > 1000
+    for: 30s
+    labels:
+      severity: warning
+    annotations:
+      summary: "TCP Connection Time Wait (instance {{ $labels.instance }})"
+      description: "TCP Connection Time Wait is > 1000\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"

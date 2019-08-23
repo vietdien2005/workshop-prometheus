@@ -1,0 +1,56 @@
+groups:
+- name: blackbox.rules
+  rules:
+  - alert: EndpointDown
+    expr: up{job="blackbox"} == 0 or probe_success{job="blackbox"} == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Endpoint {{ $labels.instance }} down"
+      description: "Endpoint down\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+  - alert: BlackboxSlowPing
+    expr: probe_icmp_duration_seconds > 3
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Blackbox slow ping (instance {{ $labels.instance }})"
+      description: "Blackbox ping took more than 3s\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+  - alert: BlackboxSlowRequests
+    expr: probe_http_duration_seconds > 3
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Blackbox slow requests (instance {{ $labels.instance }})"
+      description: "Blackbox request took more than 3s\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+  - alert: StatusCode
+    expr: probe_http_status_code <= 199 OR probe_http_status_code >= 400
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Status Code (instance {{ $labels.instance }})"
+      description: "HTTP status code is not 200-399\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+  - alert: SslCertificateWillExpireSoon
+    expr: probe_ssl_earliest_cert_expiry - time() < 86400 * 30
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "SSL certificate will expire soon (instance {{ $labels.instance }})"
+      description: "SSL certificate expires in 30 days\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+  - alert: SslCertificateHasExpired
+    expr: probe_ssl_earliest_cert_expiry - time()  <= 0
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "SSL certificate has expired (instance {{ $labels.instance }})"
+      description: "SSL certificate has expired already\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"

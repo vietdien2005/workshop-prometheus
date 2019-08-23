@@ -1,0 +1,29 @@
+groups:
+- name: cpu.rules
+  rules:
+  - alert: HighCpuLoad
+    expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 90
+    for: 30s
+    labels:
+      severity: warning
+    annotations:
+      summary: "High CPU load (instance {{ $labels.instance }})"
+      description: "CPU load is > 90%\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+  - alert: ContextSwitching
+    expr: rate(node_context_switches_total[5m]) > 4000
+    for: 30s
+    labels:
+      severity: warning
+    annotations:
+      summary: "Context switching (instance {{ $labels.instance }})"
+      description: "Context switching is growing on node (> 4000 / s)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+  - alert: SystemLoad5m
+    expr: node_load5 > 10
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: 'System load high (instance {{ $labels.instance }})'
+      description: 'System load for target {{ $labels.job }} is high ({{ $value }})'

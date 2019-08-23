@@ -1,0 +1,20 @@
+groups:
+- name: memory.rules
+  rules:
+  - alert: OutOfMemory
+    expr: (1 - ((node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes) / node_memory_MemTotal_bytes)) * 100 > 90
+    for: 30s
+    labels:
+      severity: warning
+    annotations:
+      summary: Server memory is almost full
+      description: "Host memory usage is {{ humanize $value}}%. Reported by instance {{ $labels.instance }} of job {{ $labels.job }}"
+
+  - alert: SwapIsFillingUp
+    expr: (1 - (node_memory_SwapFree_bytes / node_memory_SwapTotal_bytes)) * 100 > 90
+    for: 30s
+    labels:
+      severity: warning
+    annotations:
+      summary: "Swap is filling up (instance {{ $labels.instance }})"
+      description: "Swap is filling up (>90%)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
