@@ -1,12 +1,12 @@
 global:
-  evaluation_interval: 30s # default 1 minute
-  scrape_interval: 45s # default 1 minute
+  scrape_interval: 20s # default 1 minute
+  scrape_timeout: 10s
 
 alerting:
   alertmanagers:
   - static_configs:
     - targets:
-      - localhost:9093
+      - alertmanager:9093
 
 rule_files:
   - rules/*.rule.yml
@@ -17,3 +17,26 @@ scrape_configs:
     metrics_path: '/metrics'
     static_configs:
       - targets: ['localhost:9090']
+
+  - job_name: workshop_node # whitebox monitoring
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: [
+        '<ip_address>:8080'
+      ]
+
+  - job_name: 'blackbox' # blackbox monitoring
+    metrics_path: /probe
+    scrape_interval: 1m
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+        - https://techtalk.vn
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox:9115
