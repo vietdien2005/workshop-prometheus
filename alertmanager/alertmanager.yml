@@ -1,5 +1,5 @@
 global:
-  # slack_api_url: "https://hooks.slack.com/services/<api-token>"
+  slack_api_url: "https://hooks.slack.com/services/<api-token>"
   resolve_timeout: 20s
 
 route:
