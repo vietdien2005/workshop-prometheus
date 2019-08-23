@@ -26,7 +26,7 @@
 
 ![alertmanager](./images/alertmanager.png)
 
-- Truy cập Grafana [http://localhost:9115](http://localhost:9115) và login với `username/password: admin / admin`
+- Truy cập Grafana [http://localhost:3000](http://localhost:3000) và login với `username/password: admin / admin`
 
 ![grafana](./images/grafana.png)
 
