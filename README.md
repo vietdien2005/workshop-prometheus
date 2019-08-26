@@ -14,6 +14,10 @@
 - Docker 17.x or 18.x
 - docker-compose
 
+## Mô hình
+
+![mohinh](./images/mohinh.png)
+
 ## Chuẩn bị
 
 - Clone Repo: `https://github.com/vietdien2005/workshop-prometheus.git`
